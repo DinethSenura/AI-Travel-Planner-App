@@ -1,40 +1,68 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import React, { useEffect } from 'react';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ToastAndroid } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { useNavigation, useRouter } from 'expo-router';
 import { Colors } from './../../../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from './../../../configs/FirebaseConfig';
 
 export default function SignUp() {
   const navigation = useNavigation();
-  const router=useRouter();
+  const router = useRouter();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('');
 
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
     });
-  }, [navigation]);
+  }, []);
+
+  const onCreateAccount = () => {
+    if (!email || !password || !fullName) {
+      ToastAndroid.show('Please enter all details', ToastAndroid.LONG);
+      return;
+    }
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed up
+        const user = userCredential.user;
+        console.log(user);
+        // Perform additional actions such as navigating to another screen
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorMessage, errorCode);
+        // Display an error message to the user
+        ToastAndroid.show(`Error: ${errorMessage}`, ToastAndroid.LONG);
+      });
+  };
 
   return (
-    <View 
+    <View
       style={{
         padding: 25,
         paddingTop: 50,
-        backgroundColor:Colors.WHITE,
-        height:'100%'
+        backgroundColor: Colors.WHITE,
+        height: '100%'
       }}
     >
-       <TouchableOpacity onPress={()=>router.back()}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-     </TouchableOpacity>
+      <TouchableOpacity onPress={() => router.back()}>
+        <Ionicons name="arrow-back" size={24} color="black" />
+      </TouchableOpacity>
       <Text style={{
         fontFamily: 'outfit-bold',
         fontSize: 30,
-        marginTop:30
+        marginTop: 30
       }}>
         Create New Account
       </Text>
 
-       {/* User Full Name  */}
+      {/* User Full Name */}
       <View style={{
         marginTop: 50,
       }}>
@@ -46,6 +74,8 @@ export default function SignUp() {
         <TextInput
           style={styles.input}
           placeholder="Enter Full Name"
+          onChangeText={(value) => setFullName(value)}
+          value={fullName}
         />
       </View>
 
@@ -60,7 +90,9 @@ export default function SignUp() {
         </Text>
         <TextInput
           style={styles.input}
+          onChangeText={(value) => setEmail(value)}
           placeholder="Enter Email"
+          value={email}
         />
       </View>
 
@@ -76,37 +108,45 @@ export default function SignUp() {
         <TextInput
           secureTextEntry={true}
           style={styles.input}
+          onChangeText={(value) => setPassword(value)}
           placeholder="Enter Password"
+          value={password}
         />
       </View>
 
-       {/* Sign In Button */}
-    <View style={{ 
-      padding:20,
-      backgroundColor:Colors.PRIMARY,
-      borderRadius:15,
-      marginTop:50
-    }}>
-       <Text style={{
-        color:Colors.WHITE,
-        textAlign:'center'
-       }}>Create Account</Text>
-    </View>
-     {/* Create Account Button */}
-     <TouchableOpacity
-       onPress={()=>router.replace('auth/sign-in')}
-      style={{ 
-      padding:20,
-      backgroundColor:Colors.WHITE,
-      borderRadius:15,
-      marginTop:20,
-      borderWidth:1
-    }}>
-       <Text style={{
-        color:Colors.PRIMARY,
-        textAlign:'center'
-       }}>Sign in</Text>
-    </TouchableOpacity>
+      {/* Sign In Button */}
+      <TouchableOpacity onPress={onCreateAccount} style={{
+        padding: 20,
+        backgroundColor: Colors.PRIMARY,
+        borderRadius: 15,
+        marginTop: 50
+      }}>
+        <Text style={{
+          color: Colors.WHITE,
+          textAlign: 'center'
+        }}>
+          Create Account
+        </Text>
+      </TouchableOpacity>
+      
+      {/* Create Account Button */}
+      <TouchableOpacity
+        onPress={() => router.replace('auth/sign-in')}
+        style={{
+          padding: 20,
+          backgroundColor: Colors.WHITE,
+          borderRadius: 15,
+          marginTop: 20,
+          borderWidth: 1
+        }}
+      >
+        <Text style={{
+          color: Colors.PRIMARY,
+          textAlign: 'center'
+        }}>
+          Sign in
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
