@@ -31,11 +31,18 @@ export default function SignIn() {
   .then((userCredential) => {
     // Signed in 
     const user = userCredential.user;
+    router.replace('/mytrip')
+    console.log(user);
     // ...
   })
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
+    console.log(errorMessage,error.code)
+    if(errorCode=='auth/invalid-credential')
+    {
+      ToastAndroid.show("Invalid credentials",ToastAndroid.LONG)
+    }
   });
   }
 
@@ -97,7 +104,7 @@ export default function SignIn() {
     </View>
 
      {/* Sign In Button */}
-    <TouchableOpacity style={{ 
+    <TouchableOpacity onPress={onSignIn}style={{ 
       padding:20,
       backgroundColor:Colors.PRIMARY,
       borderRadius:15,
