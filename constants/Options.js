@@ -42,7 +42,7 @@ export const SelectTravelesList=[
     {
         id:2,
         title:'Moderate',
-        desc:'Keep cost on the average ',
+        desc:'Keep cost on the average side',
         icon:'💰',
     
     
