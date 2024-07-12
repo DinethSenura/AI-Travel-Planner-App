@@ -1,4 +1,4 @@
-import { View, Text, FlatList, TouchableOpacity, ToastAndroid } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, ToastAndroid, } from 'react-native'
 import React, { useEffect, useState, useContext} from 'react'
 import { Link, useNavigation, useRouter } from 'expo-router'
 import { SelectBudgetOptions } from '../../constants/Options';
@@ -28,7 +28,7 @@ export default function SelectBudget() {
     const onclickContinue=()=>{
         if(!selectedOption)
         {
-            ToastAndroid.show('Select Your Budget',ToastAndroid,LONG)
+            ToastAndroid.show('Select Your Budget',ToastAndroid.LONG)
             return ;
 
     }
