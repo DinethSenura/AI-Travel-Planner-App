@@ -54,7 +54,7 @@ export default function MyTrip() {
         <Ionicons name="add-circle" size={50} color="black" />
       </View>
 
-      {loading&&<ActivityIndicator size={'large'} />}
+      {loading&&<ActivityIndicator size={'large'} color={Colors.PRIMARY} />}
 
       {userTrips?.length==0?
       <StartNewTripCard/>
