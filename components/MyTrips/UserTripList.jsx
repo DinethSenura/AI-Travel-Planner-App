@@ -1,8 +1,10 @@
 import { View, Text, Image } from 'react-native'
 import React from 'react'
+import moment from 'moment'
 
 export default function UserTripList({userTrips}) {
-  return (
+  const LatestTrip=JSON.parse(userTrips[0].tripData)
+  return userTrips&& (
     <View>
       <View style={{
         marginTop:20
@@ -15,7 +17,13 @@ export default function UserTripList({userTrips}) {
                 borderRadius:15
             }}/>
             <View>
-                <Text>{userTrips[0]?.tripPlan?.travelPlan?.location}</Text>
+                <Text>{userTrips[0]?.tripPlane?.trip?.rating}</Text>
+                <Text style={{
+                  fontFamily:'outfit',
+                  fontSize:17
+                }}>{moment(LatestTrip.startDate).format('DD MMM YYYY')}</Text>
+
+                {/* <Text>🚌{LatestTrip.traveler.title}</Text> */}
             </View>
       </View>
     </View>
