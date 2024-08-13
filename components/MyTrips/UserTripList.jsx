@@ -17,7 +17,7 @@ export default function UserTripList({userTrips}) {
                 borderRadius:15
             }}/>
             <View>
-                <Text>{userTrips[0]?.tripPlane?.trip?.rating}</Text>
+                <Text>{userTrips[0]?.tripPlane?.location?.hotel}</Text>
                 <Text style={{
                   fontFamily:'outfit',
                   fontSize:17
